@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install:*)",
+      "WebSearch",
+      "WebFetch(domain:mtg.github.io)",
+      "WebFetch(domain:essentia.upf.edu)",
+      "WebFetch(domain:editor.p5js.org)",
+      "WebFetch(domain:www.jsdelivr.com)",
+      "WebFetch(domain:cdn.jsdelivr.net)",
+      "Bash(node:*)"
+    ]
+  }
+}

@@ -1,0 +1,287 @@
+/* ── Reset & Variables ────────────────────────── */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #0f1117;
+  --surface: #1a1d27;
+  --surface2: #242838;
+  --text: #e4e6f0;
+  --text-dim: #f0f0f0;
+  --accent: #6c5ce7;
+  --accent-glow: rgba(108, 92, 231, 0.25);
+  --green: #00e676;
+  --red: #ff5252;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+html, body, #root {
+  height: 100%;
+  overflow: hidden;
+  touch-action: manipulation;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+/* ── App Shell ───────────────────────────────── */
+.app {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: calc(var(--safe-top) + 12px) 16px calc(var(--safe-bottom) + 12px);
+  gap: 12px;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+/* ── Error Toast ─────────────────────────────── */
+.error-toast {
+  background: var(--red);
+  color: white;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+/* ── Top Bar ─────────────────────────────────── */
+.top-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 32px;
+  flex-shrink: 0;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--text-dim);
+  flex-shrink: 0;
+}
+
+.status-dot.active {
+  background: var(--green);
+  box-shadow: 0 0 8px var(--green);
+}
+
+.status-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-dim);
+}
+
+.rms-indicator {
+  flex: 1;
+  height: 4px;
+  background: var(--surface2);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.rms-bar {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+  border-radius: 2px;
+  transition: width 0.1s ease-out;
+}
+
+/* ── Chord Area (main tap target) ────────────── */
+.chord-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 20px;
+  background: var(--surface);
+  border: 1px solid var(--surface2);
+  cursor: pointer;
+  position: relative;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.chord-area:active {
+  background: var(--surface2);
+}
+
+.tap-hint {
+  color: var(--text-dim);
+  font-size: 1rem;
+  font-weight: 500;
+  position: absolute;
+  bottom: 24px;
+}
+
+/* ── Chord Display ───────────────────────────── */
+.chord-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 16px;
+}
+
+.chord-empty {
+  min-height: 100px;
+}
+
+.chord-waiting {
+  font-size: 3rem;
+  color: var(--text-dim);
+}
+
+.chord-past-row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+  align-items: baseline;
+}
+
+.chord-past-item {
+  font-size: 56px;
+  font-weight: 700;
+  color: var(--text-dim);
+}
+
+.chord-past-item:nth-child(1) { opacity: 0.5; }
+.chord-past-item:nth-child(2) { opacity: 0.5; }
+.chord-past-item:nth-child(3) { opacity: 0.35; }
+.chord-past-item:nth-child(n+4) { opacity: 0.30; }
+
+.chord-current {
+  font-size: min(20vw, 7rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  animation: popIn 0.15s ease-out;
+}
+
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.chord-confidence-bar {
+  width: 80px;
+  height: 3px;
+  background: var(--surface2);
+  border-radius: 2px;
+  margin-top: 10px;
+  overflow: hidden;
+}
+
+.chord-confidence-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 2px;
+  transition: width 0.15s ease-out;
+}
+
+/* ── Chroma Visualizer ───────────────────────── */
+.chroma {
+  display: flex;
+  gap: 3px;
+  height: 56px;
+  flex-shrink: 0;
+  padding: 0 4px;
+}
+
+.chroma-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.chroma-track {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+}
+
+.chroma-fill {
+  width: 100%;
+  background: var(--accent);
+  border-radius: 3px 3px 0 0;
+  transition: height 0.08s ease-out;
+  min-height: 1px;
+}
+
+.chroma-note {
+  font-size: 0.55rem;
+  color: var(--text-dim);
+  margin-top: 2px;
+  font-weight: 600;
+}
+
+/* ── History ─────────────────────────────────── */
+.history {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  flex-shrink: 0;
+  padding: 4px 0;
+  scrollbar-width: none;
+}
+
+.history::-webkit-scrollbar { display: none; }
+
+.history-item {
+  background: var(--surface);
+  border: 1px solid var(--surface2);
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* ── Stop Button ─────────────────────────────── */
+.stop-btn {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 14px;
+  background: var(--surface);
+  border: 1px solid var(--surface2);
+  color: var(--red);
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.stop-btn:active {
+  background: var(--surface2);
+}
+
+/* ── Desktop (wider screens) ─────────────────── */
+@media (min-width: 600px) {
+  .app {
+    padding: 24px;
+    gap: 16px;
+  }
+
+  .chord-current {
+    font-size: 8rem;
+  }
+
+  .chroma {
+    height: 80px;
+  }
+}
